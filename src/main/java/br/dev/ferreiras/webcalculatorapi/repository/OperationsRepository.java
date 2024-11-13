@@ -21,8 +21,5 @@ public interface OperationsRepository extends JpaRepository<Operations, Long> {
           """)
   BigDecimal findOperationsCostByOperation(String operation);
 
-  @Query ("""
-          SELECT o.operation,  o.cost c FROM Operations o
-          """)
-  List<Object> findAllCosts();
+
 }
