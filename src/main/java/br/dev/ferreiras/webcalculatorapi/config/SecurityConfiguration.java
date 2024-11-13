@@ -24,9 +24,9 @@ public class SecurityConfiguration {
     protected static final String[] WHITELIST = {
 
             "/swagger-ui/**", "/api-docs/**", "/swagger-docs/**",
-            "/swagger-resources/**", "/actuator/**", "/api/v1/login", "/",
-            "/api/v1/home", "api/v1/csrf", "/error", "/api/v1/error",
-            "401-error/**", "404-error/**"
+            "/swagger-resources/**", "/actuator/**", "/api/v2/login", "/",
+            "/api/v2/home", "api/v2/csrf", "/error", "/api/v2/error",
+            "/api/v2/costs", "401-error/**", "404-error/**"
     };
 
     /**
