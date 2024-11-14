@@ -3,6 +3,7 @@ package br.dev.ferreiras.webcalculatorapi.services;
 
 import br.dev.ferreiras.webcalculatorapi.contracts.IUserService;
 import br.dev.ferreiras.webcalculatorapi.dto.LoadBalanceResponseDto;
+import br.dev.ferreiras.webcalculatorapi.dto.UserDto;
 import br.dev.ferreiras.webcalculatorapi.dto.UserRequestDto;
 import br.dev.ferreiras.webcalculatorapi.dto.UserResponseDto;
 import br.dev.ferreiras.webcalculatorapi.entity.Role;
@@ -69,9 +70,10 @@ public class UserService implements IUserService {
    * @return List of all registered users
    */
   @Override
-  public List<User> findAllUsers() {
+  public List<UserDto> findAllUsers() {
 
-    return this.userRepository.findAll();
+    List<User> users = userRepository.findAll();
+    return users.stream().map(x -> new UserDto(Optional.ofNullable(x))).toList();
   }
 
   /**

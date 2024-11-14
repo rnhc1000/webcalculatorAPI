@@ -1,5 +1,6 @@
 package br.dev.ferreiras.webcalculatorapi.contracts;
 
+import br.dev.ferreiras.webcalculatorapi.dto.UserDto;
 import br.dev.ferreiras.webcalculatorapi.entity.Role;
 import br.dev.ferreiras.webcalculatorapi.entity.User;
 
@@ -11,7 +12,7 @@ public interface IUserService {
 
     User getUserId(Long id);
     void saveUser(User user);
-    List<User> findAllUsers();
+    List<UserDto> findAllUsers();
     Optional<User> getUsername(String username);
     Role getRole();
     int updateBalance(String username, BigDecimal balance);

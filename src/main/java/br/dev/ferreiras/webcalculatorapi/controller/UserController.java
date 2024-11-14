@@ -1,5 +1,6 @@
 package br.dev.ferreiras.webcalculatorapi.controller;
 
+import br.dev.ferreiras.webcalculatorapi.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,10 +18,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import br.dev.ferreiras.webcalculatorapi.dto.LoadBalanceRequestDto;
-import br.dev.ferreiras.webcalculatorapi.dto.LoadBalanceResponseDto;
-import br.dev.ferreiras.webcalculatorapi.dto.UserRequestDto;
-import br.dev.ferreiras.webcalculatorapi.dto.UserResponseDto;
 import br.dev.ferreiras.webcalculatorapi.entity.User;
 import br.dev.ferreiras.webcalculatorapi.services.UserService;
 
@@ -45,7 +42,7 @@ public class UserController {
   @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content)
   @ApiResponse(responseCode = "422", description = "User already exists!", content = @Content)
   @ResponseStatus(value = HttpStatus.CREATED)
-//  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
   @PostMapping("/users")
   public ResponseEntity<Object> newUser(@RequestBody final UserResponseDto userResponseDto) {
     final LoadBalanceResponseDto userData = this.userService.addNewUser(userResponseDto);
@@ -62,8 +59,8 @@ public class UserController {
   @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content)
   @ResponseStatus(value = HttpStatus.OK, reason = "Users found!")
   @GetMapping("/users")
-//  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
-  public ResponseEntity<List<User>> listUsers() {
+  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+  public ResponseEntity<List<UserDto>> listUsers() {
     final var users = this.userService.findAllUsers();
 
     return ResponseEntity.ok(users);
@@ -78,7 +75,7 @@ public class UserController {
   @ApiResponse(responseCode = "404", description = "Not processable", content = @Content)
   @ResponseStatus(value = HttpStatus.OK, reason = "User found!")
   @GetMapping("/users/{username}")
-//  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
   public ResponseEntity<UserResponseDto> findById(@Parameter(description = "user to be fetched") @PathVariable final String username) {
 
     final Optional<User> user = this.userService.getUsername(username);
@@ -98,7 +95,7 @@ public class UserController {
   @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content)
   @ApiResponse(responseCode = "422", description = "Not Processable!", content = @Content)
   @ResponseStatus(value=HttpStatus.OK, reason="wallet loaded")
-//  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
   @PostMapping("/user/load")
   public ResponseEntity<Integer> loadBalance(@RequestBody final LoadBalanceRequestDto loadBalanceDto) {
     final var useCheck = loadBalanceDto.username();
@@ -149,7 +146,7 @@ public class UserController {
   @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content)
   @ApiResponse(responseCode = "422", description = "User already exists!", content = @Content)
   @ResponseStatus(value = HttpStatus.OK)
-//  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
   @PostMapping("/users/status")
   ResponseEntity<UserResponseDto> updateUserStatus(@RequestBody final UserRequestDto userRequestDto) {
     final UserResponseDto user = this.userService.activateUser(userRequestDto);
