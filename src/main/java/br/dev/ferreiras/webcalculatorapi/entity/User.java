@@ -167,4 +167,17 @@ public class User implements UserDetails {
 
     return passwordEncoder.matches(loginRequestDto.password(), this.password);
   }
+
+  @Override
+  public String toString() {
+    return "User{" +
+        "userId=" + userId +
+        ", username='" + username + '\'' +
+        ", password='" + password + '\'' +
+        ", status='" + status + '\'' +
+        ", balance=" + balance +
+        ", createdAt=" + createdAt +
+        ", roles=" + roles +
+        '}';
+  }
 }

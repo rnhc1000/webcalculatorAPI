@@ -73,7 +73,7 @@ public class RecordsService {
       this.recordsRepository.save(records);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   public ResponseEntity<RecordsDto> getPagedRecords(final int page, final int size) {
 
     final Pageable paging = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
@@ -92,6 +92,7 @@ public class RecordsService {
         );
   }
 
+  @Transactional(readOnly = true)
   public ResponseEntity<RecordsDto> findRecordsByUsername(final int page, final int size, final String username) {
 
     final Pageable paging = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
@@ -108,7 +109,7 @@ public class RecordsService {
         );
     //.cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS)
   }
-
+  @Transactional(readOnly = true)
   public List<RecordsDto> findRecordsByUsernameStatus(final int page, final int size, final String username) {
 
     final Pageable paging = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
@@ -129,11 +130,13 @@ public class RecordsService {
     //.cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS)
   }
 
+  @Transactional
   public void deleteRecordById(final long id) {
 
     this.recordsRepository.deleteById(id);
   }
 
+  @Transactional(readOnly = true)
   public List<RecordsDto> findSoftDeletedRecords(final int page, final int size, final String username) {
 
     final Pageable paging = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
