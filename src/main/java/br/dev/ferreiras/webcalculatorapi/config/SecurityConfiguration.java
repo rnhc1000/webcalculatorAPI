@@ -17,43 +17,43 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    /**
-     * Calculator Web API Security Configuration
-     * endpoints below do not need to be authenticated
-     */
-    protected static final String[] WHITELIST = {
+  /**
+   * Calculator Web API Security Configuration
+   * endpoints below do not need to be authenticated
+   */
+  protected static final String[] WHITELIST = {
 
-            "/swagger-ui/**", "/api-docs/**", "/swagger-docs/**",
-            "/swagger-resources/**", "/actuator/**", "/api/v2/login", "/",
-            "/api/v2/home", "api/v2/csrf", "/error", "/api/v2/error",
-            "/api/v2/costs", "401-error/**", "404-error/**"
-    };
+      "/swagger-ui/**", "/api-docs/**", "/swagger-docs/**",
+      "/swagger-resources/**", "/actuator/**", "/api/v2/login", "/",
+      "/api/v2/home", "/api/v2/users", "/error", "/api/v2/error",
+      "/api/v2/costs", "/api/v2/random", "/api/v2/operations",
 
-    /**
-     * @param httpSecurity handler to deal with the requests
-     * @return object defining the security framework
-     * @throws Exception RuntimeException
-     * Session management from ALWAYS -> STATELESS so the token hash is checked at every exchange
-     * between client and server
-     */
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)throws Exception {
+  };
 
-        httpSecurity
-                .securityContext(contextConfig -> contextConfig.requireExplicitSave(false) )
-                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS) )
-                .addFilterBefore(new ForwardedHeaderFilter(), ForceEagerSessionCreationFilter.class)
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(SecurityConfiguration.WHITELIST).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .csrf(AbstractHttpConfigurer::disable);
-        return httpSecurity.build();
-    }
+  /**
+   * @param httpSecurity handler to deal with the requests
+   * @return object defining the security framework
+   * @throws Exception RuntimeException
+   *                   Session management from ALWAYS -> STATELESS so the token hash is checked at every exchange
+   *                   between client and server
+   */
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
+    httpSecurity
+        .securityContext(contextConfig -> contextConfig.requireExplicitSave(false))
+        .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .addFilterBefore(new ForwardedHeaderFilter(), ForceEagerSessionCreationFilter.class)
+        .authorizeHttpRequests(authorize -> authorize
+//            .requestMatchers(SecurityConfiguration.WHITELIST).permitAll()
+            .anyRequest().permitAll()
+        )
+        .csrf(AbstractHttpConfigurer::disable);
+    return httpSecurity.build();
+  }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

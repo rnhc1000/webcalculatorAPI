@@ -5,6 +5,7 @@ import br.dev.ferreiras.webcalculatorapi.entity.Operations;
 import br.dev.ferreiras.webcalculatorapi.repository.OperationsRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -24,5 +25,12 @@ public class OperationCostsService {
 
     return result.stream().map(OperationCostsDto::new).toList();
   }
+
+
+  public BigDecimal getOperationCostByOperation(final String operation) {
+
+    return this.operationsRepository.findOperationsCostByOperation(operation);
+  }
+
 
 }
