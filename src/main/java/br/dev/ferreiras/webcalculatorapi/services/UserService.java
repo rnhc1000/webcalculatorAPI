@@ -11,13 +11,14 @@ import br.dev.ferreiras.webcalculatorapi.entity.User;
 import br.dev.ferreiras.webcalculatorapi.repository.OperationsRepository;
 import br.dev.ferreiras.webcalculatorapi.repository.RoleRepository;
 import br.dev.ferreiras.webcalculatorapi.repository.UserRepository;
+import br.dev.ferreiras.webcalculatorapi.services.exceptions.NoSuchElementException;
 import br.dev.ferreiras.webcalculatorapi.services.exceptions.ResourceNotFoundException;
 import br.dev.ferreiras.webcalculatorapi.services.exceptions.UserAlreadyExistsException;
+import br.dev.ferreiras.webcalculatorapi.services.exceptions.UsernameNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,8 @@ public class UserService implements IUserService {
   public List<UserDto> findAllUsers() {
 
     List<User> users = userRepository.findAll();
-    return users.stream().map(x -> new UserDto(Optional.ofNullable(x))).toList();
+    System.out.println(users);
+    return users.stream().map(user -> new UserDto(Optional.ofNullable(user))).toList();
   }
 
   /**

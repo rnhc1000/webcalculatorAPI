@@ -140,4 +140,16 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errorResponseDto);
   }
 
+
+  @ExceptionHandler(value={NoSuchElementException.class})
+  public ResponseEntity<ErrorResponseDto> noSuchElement(final NoSuchElementException exception, final WebRequest request) {
+    final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+        HttpStatus.UNPROCESSABLE_ENTITY.value(),
+        ControllerExceptionHandler.USER_NOT_FOUND,
+        Instant.now()
+    );
+
+    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY.value()).body(errorResponseDto);
+  }
+
 }

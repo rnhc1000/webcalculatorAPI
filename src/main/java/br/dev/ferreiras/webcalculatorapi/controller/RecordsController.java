@@ -65,7 +65,7 @@ public class RecordsController {
   public ResponseEntity<RecordsDto> getRecordsByUsername(
       @RequestParam(defaultValue = "0") final int page,
       @RequestParam(defaultValue = "10") final int size
-  ) throws Exception {
+  ) throws UsernameNotFoundException {
 
     final String user = Optional.ofNullable(this.userService.authenticated())
         .orElseThrow(() ->
@@ -116,21 +116,17 @@ public class RecordsController {
   }
 
   @Operation(summary = "Fetch records soft-deleted provided the username authenticated")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Return soft deleted records.",
-          content = {@Content(mediaType = "application/json",
-              schema = @Schema(implementation = RecordsController.class))}),
-      @ApiResponse(responseCode = "404", description = "Resource not found!",
-          content = {@Content(mediaType = "application/json",
-              schema = @Schema(implementation = RecordsController.class))})
-  })
-  @GetMapping(value="/deleted")
+  @ApiResponse(responseCode = "200", description = "Return soft deleted records.",
+      content = {@Content(mediaType = "application/json",
+          schema = @Schema(implementation = RecordsController.class))})
+  @ApiResponse(responseCode = "404", description = "Resource not found!",
+      content = @Content)
+  @GetMapping(value = "/deleted")
   public ResponseEntity<List<RecordsDto>> getSoftDeletedRecords(
       @RequestParam final int page,
       @RequestParam final int size,
       @RequestParam final String username
-  ) throws Exception {
-
+  ) throws UsernameNotFoundException{
 
     final String user = Optional.ofNullable(this.userService.authenticated())
         .orElseThrow(() ->
