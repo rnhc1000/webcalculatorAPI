@@ -27,9 +27,10 @@ public class HandleErrorController implements ErrorController {
       case 401 -> "401-error.html";
       case 403 -> "403-error.html";
       case 404 -> "404-error.html";
+      case 405 -> "405-error.html";
+      case 415 -> "415-error.html";
       case 500 -> "500-error.html";
       default -> "error.html";
-
     };
   }
 }

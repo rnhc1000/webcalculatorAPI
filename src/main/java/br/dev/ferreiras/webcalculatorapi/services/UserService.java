@@ -2,17 +2,26 @@ package br.dev.ferreiras.webcalculatorapi.services;
 
 
 import br.dev.ferreiras.webcalculatorapi.contracts.IUserService;
+import br.dev.ferreiras.webcalculatorapi.dto.LoadBalanceResponseDto;
+import br.dev.ferreiras.webcalculatorapi.dto.UserRequestDto;
+import br.dev.ferreiras.webcalculatorapi.dto.UserResponseDto;
 import br.dev.ferreiras.webcalculatorapi.entity.Role;
 import br.dev.ferreiras.webcalculatorapi.entity.User;
 import br.dev.ferreiras.webcalculatorapi.repository.OperationsRepository;
 import br.dev.ferreiras.webcalculatorapi.repository.RoleRepository;
 import br.dev.ferreiras.webcalculatorapi.repository.UserRepository;
 import br.dev.ferreiras.webcalculatorapi.services.exceptions.ResourceNotFoundException;
+import br.dev.ferreiras.webcalculatorapi.services.exceptions.UserAlreadyExistsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService implements IUserService {
@@ -23,10 +32,17 @@ public class UserService implements IUserService {
 
    private final OperationsRepository operationsRepository;
 
-  public UserService(UserRepository userRepository, RoleRepository roleRepository, OperationsRepository operationsRepository) {
+   private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+   private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+  public UserService(
+      UserRepository userRepository, RoleRepository roleRepository,
+      OperationsRepository operationsRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.userRepository = userRepository;
     this.roleRepository = roleRepository;
     this.operationsRepository = operationsRepository;
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
   /**
@@ -107,4 +123,55 @@ public class UserService implements IUserService {
 
     return this.operationsRepository.findOperationsCostById(id);
   }
+
+  public LoadBalanceResponseDto addNewUser(final UserResponseDto userDto) {
+    if (this.getUsername(userDto.getUsername()).isPresent()) {
+      throw new UserAlreadyExistsException("User already exists!");
+    } else {
+      final var userRole = this.getRole();
+      final var user = new User();
+      user.setUsername(userDto.getUsername());
+      user.setPassword(this.bCryptPasswordEncoder.encode(userDto.getPassword()));
+      user.setBalance(userDto.getBalance());
+      user.setStatus(userDto.getStatus());
+      user.setRoles(Set.of(userRole));
+      this.saveUser(user);
+
+      return new LoadBalanceResponseDto(userDto.getUsername(), userDto.getBalance());
+    }
+  }
+
+
+  /**
+   * @param userRequestDto ( username, status )
+   * @return status ACTIVE or INACTIVE
+   */
+  public UserResponseDto activateUser(final UserRequestDto userRequestDto) {
+
+    String update;
+    if(userRequestDto.username().isEmpty()) {
+      throw new UsernameNotFoundException("Username not found!");
+    } else {
+
+      update = this.userRepository.updateStatus(userRequestDto.username(), userRequestDto.status());
+
+    }
+
+    return new UserResponseDto(userRequestDto.username(), update);
+  }
+
+  public String authenticated() {
+
+    try {
+      final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      final var user = this.userRepository.findByUsername(authentication.getName());
+      final String currentUserName = user.orElseThrow().getUsername();
+      logger.info("CurrentUsername -> {}", currentUserName);
+      return currentUserName;
+
+    } catch (RuntimeException ex ){
+      throw new NoSuchElementException("Element does not exist");
+    }
+  }
+
 }

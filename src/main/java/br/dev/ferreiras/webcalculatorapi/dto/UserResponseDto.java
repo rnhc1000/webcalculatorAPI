@@ -1,6 +1,10 @@
 package br.dev.ferreiras.webcalculatorapi.dto;
 
 import br.dev.ferreiras.webcalculatorapi.entity.User;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
@@ -23,6 +27,12 @@ public class UserResponseDto {
     balance = entity.getBalance();
   }
 
+  public UserResponseDto(@NotBlank @NotNull @Email @Size(min = 5, max = 40) String username, @NotBlank @Size(min = 10, max = 100) String password, String status, BigDecimal balance) {
+  }
+
+  public UserResponseDto(String username, String update) {
+  }
+
   public Long getUserId() {
     return userId;
   }
@@ -42,4 +52,6 @@ public class UserResponseDto {
   public BigDecimal getBalance() {
     return balance;
   }
+
+
 }
