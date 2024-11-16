@@ -59,7 +59,7 @@ public class OperationsController {
   @ApiResponse(responseCode = "200", description = "Costs available", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OperationsController.class)))
   @ApiResponse(responseCode = "401", description = "Access denied", content = @Content(mediaType = "application/json"))
   @ApiResponse(responseCode = "403", description = "Not authorized", content = @Content)
-  @GetMapping("/costs")
+  @GetMapping("/operators")
   public ResponseEntity<List<OperationCostsDto>> getOperationCosts() {
     final var costs = operationCostsService.getOperationsCost();
 
