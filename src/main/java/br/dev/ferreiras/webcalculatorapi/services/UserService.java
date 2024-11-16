@@ -167,6 +167,7 @@ public class UserService implements IUserService {
   public String authenticated() {
 
     try {
+
       final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
       final var user = this.userRepository.findByUsername(authentication.getName());
       final String currentUserName = user.orElseThrow().getUsername();

@@ -31,6 +31,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.BAD_REQUEST.value(),
         ControllerExceptionHandler.JSON_DECODING_ERROR,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -42,6 +44,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.NOT_FOUND.value(),
         ControllerExceptionHandler.RESOURCE_NOT_FOUND,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -53,6 +57,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.UNAUTHORIZED.value(),
         ControllerExceptionHandler.NOT_AUTHORIZED,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -64,6 +70,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.FORBIDDEN.value(),
         ControllerExceptionHandler.ACCESS_DENIED,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -79,6 +87,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.METHOD_NOT_ALLOWED.value(),
         ControllerExceptionHandler.DATABASE_ERROR,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -90,6 +100,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.FORBIDDEN.value(),
         ControllerExceptionHandler.ACCESS_DENIED,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -101,6 +113,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.UNPROCESSABLE_ENTITY.value(),
         ControllerExceptionHandler.ILLEGAL_MATH_REQUEST,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -112,6 +126,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.PAYMENT_REQUIRED.value(),
         ControllerExceptionHandler.NOT_ENOUGH_FUNDS,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -123,6 +139,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.UNPROCESSABLE_ENTITY.value(),
         ControllerExceptionHandler.USER_ALREADY_EXISTS,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -134,6 +152,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.UNPROCESSABLE_ENTITY.value(),
         ControllerExceptionHandler.USER_NOT_FOUND,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
@@ -146,6 +166,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     final ErrorResponseDto errorResponseDto = new ErrorResponseDto(
         HttpStatus.UNPROCESSABLE_ENTITY.value(),
         ControllerExceptionHandler.USER_NOT_FOUND,
+        request.getContextPath(),
+        exception.getMessage(),
         Instant.now()
     );
 
